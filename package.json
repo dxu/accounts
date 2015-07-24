@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/dxu/accounts/issues"
   },
-  "homepage": "https://github.com/dxu/accounts"
+  "homepage": "https://github.com/dxu/accounts",
+  "dependencies": {
+    "express": "^4.13.1"
+  }
 }
