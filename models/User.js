@@ -1,8 +1,8 @@
 const crypto = require('crypto');
 const mongoose = require('mongoose');
-const User = mongoose.Schema;
+const Schema = mongoose.Schema;
 
-let User = new User({
+const User = new Schema({
   username: {
     type: String,
     unique: true,
@@ -23,4 +23,13 @@ User.methods.authenticate = function authenticate(plainPass) {
   return this.encryptPassword(plainPass) === this.hashed_password;
 };
 
-module.exports = User;
+User.virtual('password')
+  .get(function() {
+    return this.hashed_password;
+  })
+  .set(function(password) {
+    this.salt = this.makeSalt();
+    this.hashed_password = this.encryptPassword(password);
+  });
+
+module.exports = mongoose.model('User', User);
