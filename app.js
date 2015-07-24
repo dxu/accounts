@@ -10,6 +10,7 @@ const users = require('./routes/users');
 const accounts = require('./routes/accounts');
 
 const mongoose = require('mongoose');
+const sessions = require('client-sessions')
 
 const app = express();
 
@@ -43,6 +44,19 @@ app.use(function(req, res, next) {
   err.status = 404;
   next(err);
 });
+
+// sessions
+
+app.use(sessions({
+  cookieName: 'EmployeeSession',
+  secret: 'owijauhgiuhrgiu',
+  duration: 24 * 60 * 60 * 1000,
+  activeDuration: 1000 * 60 * 5,
+}));
+
+app.use(function(req, res, next) {
+});
+
 
 // error handlers
 
