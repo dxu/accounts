@@ -10,7 +10,7 @@ const users = require('./routes/users');
 const accounts = require('./routes/accounts');
 
 const mongoose = require('mongoose');
-const sessions = require('client-sessions')
+const sessions = require('client-sessions');
 
 const app = express();
 
@@ -26,6 +26,9 @@ db.once('open', function(callback) {
   console.log('Successfully opened external db in Mongo.');
 });
 
+
+
+
 // uncomment after placing your favicon in /public
 // app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(logger('dev'));
@@ -34,9 +37,20 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// sessions
+
+app.use(sessions({
+  cookieName: 'Employee',
+  requestKey: 'SecretEmployee',
+  secret: 'owijauhgiuhrgiu',
+  duration: 24 * 60 * 60 * 1000,
+  activeDuration: 1000 * 60 * 5,
+}));
+
+
 app.use('/', routes);
-app.use('/u', users);
-app.use('/a', accounts);
+app.use('/u/', users);
+app.use('/a/', accounts);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -44,19 +58,6 @@ app.use(function(req, res, next) {
   err.status = 404;
   next(err);
 });
-
-// sessions
-
-app.use(sessions({
-  cookieName: 'EmployeeSession',
-  secret: 'owijauhgiuhrgiu',
-  duration: 24 * 60 * 60 * 1000,
-  activeDuration: 1000 * 60 * 5,
-}));
-
-app.use(function(req, res, next) {
-});
-
 
 // error handlers
 
@@ -81,6 +82,5 @@ app.use(function(err, req, res, next) {
     error: {}
   });
 });
-
 
 module.exports = app;
