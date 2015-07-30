@@ -16,6 +16,7 @@ router.post('/register', function(req, res, next) {
 
 /* login a user . */
 router.post('/login', function(req, res, next) {
+  res.render('hi');
 });
 
 /* list  */
